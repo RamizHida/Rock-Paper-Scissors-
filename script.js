@@ -1,3 +1,42 @@
+"use strict";
+
+let rock = document.querySelector("#rock");
+let paper = document.querySelector("#paper");
+let scissors = document.querySelector("#scissors");
+let btn = document.getElementsByTagName("button");
+let yourScore = 0;
+let compScore = 0;
+let round = 0;
+let container = document.querySelector(".container");
+container.style.color = "green";
+let content = document.createElement("div");
+
+content.textContent = "Let's play some 🪨 - 📄 - ✂️ :)! ";
+content.style.fontSize = "20px";
+content.style.fontWeight = "bold";
+content.style.border = "solid";
+content.style.backgroundColor = "white";
+content.style.width = "460px";
+content.style.height = "140px";
+content.style.marginLeft = "auto";
+content.style.marginRight = "auto";
+
+let showRound = document.createElement("h3");
+showRound.textContent = "Round Number will appear here.";
+let choices = document.createElement("h3");
+choices.textContent = "Selections will appear here.";
+let roundResult = document.createElement("h3");
+roundResult.textContent = "The Scoreboard will appear here. Good Luck! 🍀";
+let victor = document.createElement("h2");
+victor.textContent = "";
+victor.style.color = "green";
+// victor.textContent = "The winner should show here";
+content.appendChild(showRound);
+content.appendChild(choices);
+content.appendChild(roundResult);
+content.appendChild(victor);
+container.appendChild(content);
+
 const computerPlay = function () {
   let choice = Math.floor(Math.random() * 3 + 1);
   if (choice === 1) return "rock";
@@ -5,46 +44,77 @@ const computerPlay = function () {
   else return "scissors";
 };
 
-let compScore = 0;
-let yourScore = 0;
-
-// const computerSelection = computerPlay();
-let playRound = function (playerSeletion, computerSelection) {
-  let ps = playerSeletion.toLowerCase();
-  if (ps === "rock" && computerSelection === "scissors") {
-    {
-      yourScore++;
-      return "You win this round! Rock beats Scissors";
-    }
-  } else if (ps === "rock" && computerSelection === "paper") {
-    compScore++;
-    return "You lose this round! Paper beats Rock";
-  } else if (ps === "paper" && computerSelection === "scissors") {
-    compScore++;
-    return "You lose this round! Scissor beats Paper";
-  } else if (ps === "paper" && computerSelection === "rock") {
+function playRound(player1, bot) {
+  if (player1 === "rock" && bot === "scissors") {
     yourScore++;
-    return "You win this round! Paper beats rock";
-  } else if (ps == "scissors" && computerSelection === "paper") {
-    yourScore++;
-    return "You win this round! Scissor beats Paper";
-  } else if (ps === "scissors" && computerSelection === "rock") {
+    round++;
+    showRound.textContent = `Round Number: ${round}`;
+    choices.textContent = `You chose ${player1} and the bot chose ${bot}`;
+    return (roundResult.textContent = `Your score: ${yourScore} | Bot's score: ${compScore}`);
+  } else if (player1 === "rock" && bot === "paper") {
     compScore++;
-    return "You lose round! Rock beats Scissors";
-  } else if (ps === computerSelection) {
-    return "It's a tie this round";
+    round++;
+    showRound.textContent = `Round Number: ${round}`;
+    choices.textContent = `You chose ${player1} and the bot chose ${bot}`;
+    return (roundResult.textContent = `Your score: ${yourScore} | Bot's score: ${compScore}`);
+  } else if (player1 === "paper" && bot === "scissors") {
+    compScore++;
+    round++;
+    showRound.textContent = `Round Number: ${round}`;
+    choices.textContent = `You chose ${player1} and the bot chose ${bot}`;
+    return (roundResult.textContent = `Your score: ${yourScore} | Bot's score: ${compScore}`);
+  } else if (player1 === "paper" && bot === "rock") {
+    yourScore++;
+    round++;
+    showRound.textContent = `Round Number: ${round}`;
+    choices.textContent = `You chose ${player1} and the bot chose ${bot}`;
+    return (roundResult.textContent = `Your score: ${yourScore} | Bot's score: ${compScore}`);
+  } else if (player1 === "scissors" && bot === "paper") {
+    yourScore++;
+    round++;
+    showRound.textContent = `Round Number: ${round}`;
+    choices.textContent = `You chose ${player1} and the bot chose ${bot}`;
+    return (roundResult.textContent = `Your score: ${yourScore} | Bot's score: ${compScore}`);
+  } else if (player1 === "scissors" && bot === "rock") {
+    compScore++;
+    round++;
+    showRound.textContent = `Round Number: ${round}`;
+    choices.textContent = `You chose ${player1} and the bot chose ${bot}`;
+    return (roundResult.textContent = `Your score: ${yourScore} | Bot's score ${compScore}`);
+  } else {
+    round++;
+    showRound.textContent = `Round Number: ${round}`;
+    choices.textContent = "You had the same selection as the bot!";
   }
-};
+  return (roundResult.textContent = `Your score: ${yourScore} | Bot's score: ${compScore}`);
+}
 
-let game = function () {
-  for (let i = 1; i <= 5; i++) {
-    console.log(`Round ${i}`);
-    console.log(playRound(prompt("Rock, Paper, or Scissors?"), computerPlay()));
-    console.log(`Your score: ${yourScore} | Computer score: ${compScore}`);
+rock.addEventListener("click", function () {
+  playRound("rock", computerPlay());
+});
+paper.addEventListener("click", function () {
+  playRound("paper", computerPlay());
+});
+scissors.addEventListener("click", function () {
+  playRound("scissors", computerPlay());
+});
+
+container.addEventListener("click", function () {
+  if (yourScore === 5 && compScore < yourScore) {
+    victor.textContent = "You Win!! 🎉 🏆 😎 Click a button to play again!";
+    setTimeout(function () {
+      victor.textContent = "";
+    }, 3000);
+    round = 0;
+    yourScore = 0;
+    compScore = 0;
+  } else if (compScore === 5 && compScore > yourScore) {
+    victor.textContent = "Bot Wins! 🤖 🏆 Click a button to play again!";
+    setTimeout(function () {
+      victor.textContent = "";
+    }, 3000);
+    round = 0;
+    yourScore = 0;
+    compScore = 0;
   }
-  if (yourScore > compScore) console.log("You are the Winner!");
-  else if (compScore > yourScore) console.log("You lost the game!");
-  else console.log("It's a tie game!");
-};
-
-game();
+});
